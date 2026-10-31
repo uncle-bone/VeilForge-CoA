@@ -2,9 +2,11 @@
 
 **Atmospheric graphics enhancements for Ascension: Conquest of Azeroth — Conquest Reborn.**
 
-VeilForge-CoA is an independent Conquest Reborn adaptation of the open-source [Lumenveil](https://github.com/lumenveil/Lumenveil) graphics mod for the World of Warcraft 3.3.5a client. The project is intended to simplify setup for the CR client (`Ascension.exe`) and provide a balanced starting configuration with DXVK packaged by default.
+[**Download VeilForge-CoA v1.0.0**](https://github.com/downingwow/VeilForge-CoA/releases/download/v1.0.0/VeilForge-CoA-v1.0.0.zip) · [Release notes](https://github.com/downingwow/VeilForge-CoA/releases/tag/v1.0.0)
 
-> **Project status:** Initial repository documentation. The CR-specific installer and bundled release have **not yet been published or validated**. Do not use the upstream installer unchanged and assume CR compatibility.
+VeilForge-CoA is an independent Conquest Reborn adaptation of the open-source [Lumenveil](https://github.com/lumenveil/Lumenveil) graphics mod for the World of Warcraft 3.3.5a client. It packages setup and removal scripts, DXVK, the CoAVolFog/Lumenveil renderer, and a helper that generates lamp and liquid data from the player's own game installation.
+
+> **Release status:** v1.0.0 is published. The package was assembled and its structure checked, but Windows installation and in-game compatibility have not been independently tested. Review `README-FIRST.txt` and the included notices before use.
 
 ## Graphics features
 
@@ -21,18 +23,14 @@ The Lumenveil engine provides:
 
 These are **upstream Lumenveil capabilities**, not new VeilForge-CoA engine features.
 
-## Conquest Reborn adaptation goals
+## Package contents
 
-Our planned distribution will include:
+- Installer and uninstaller scripts, with existing graphics files backed up in `VeilForge-Backup`.
+- DXVK included by default.
+- A setup helper that generates lamp and liquid data locally from the player's own game files.
+- CoAVolFog/Lumenveil renderer configuration for the Ascension client.
 
-1. Installation designed for **`Ascension.exe`** rather than the upstream `Wow.exe` assumption.
-2. A sensible **balanced graphics preset**, without an imposed universal FPS cap.
-3. **DXVK included by default**, with appropriate third-party notices.
-4. Backups and conflict checks for existing graphics DLLs and configuration files.
-5. Safe uninstall/restore behavior.
-6. Local generation of lamp and liquid data from the player's own game installation rather than redistribution of extracted game data.
-
-These are **development targets** until a tested build is released.
+The v1.0.0 package targets `Ascension.exe`. Its installation and in-game compatibility still need independent validation.
 
 ## Upstream visual gallery
 
@@ -44,7 +42,7 @@ These are **development targets** until a tested build is released.
 
 ## Compatibility and performance
 
-Target: Windows 10/11 and the World of Warcraft **3.3.5a**-based Conquest Reborn client. Actual compatibility of the upcoming CR package remains subject to in-game testing. Performance depends on hardware, zone, view distance, and other graphics mods.
+Target: Windows 10/11 and the World of Warcraft **3.3.5a**-based Conquest Reborn client. Windows installation and in-game compatibility of v1.0.0 have not been independently tested. Performance depends on hardware, zone, view distance, and other graphics mods.
 
 The upstream engine attaches to the running client to render its effects. Server rules or anti-cheat software may restrict such modifications; check applicable rules before installation. No affiliation or endorsement by Ascension or Blizzard is implied.
 
@@ -53,7 +51,7 @@ The upstream engine attaches to the running client to render its effects. Server
 - **Conquest Reborn adaptation and maintenance:** [Uncle Bone / downingwow](https://github.com/downingwow)
 - **Original graphics engine and documentation:** [Lumenveil contributors](https://github.com/lumenveil/Lumenveil)
 - **Underlying upstream renderer:** CoAVolFog by jealous-sound, as credited by Lumenveil.
-- **DXVK:** Separate open-source graphics translation project, to be attributed in release packaging.
+- **DXVK:** Bundled with its license notice in the release package.
 
 Upstream Lumenveil is licensed under the **GNU General Public License v2 (GPL-2.0)**. Any redistributed or modified engine binaries must be accompanied by the corresponding source and applicable license and third-party notices. VeilForge-CoA will retain upstream attribution rather than implying independent authorship of the engine.
 
