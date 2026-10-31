@@ -2,7 +2,7 @@
 
 **Atmospheric graphics enhancements for Ascension: Conquest of Azeroth — Conquest Reborn.**
 
-[**Download VeilForge-CoA v1.0.1 — Direct Extract**](https://github.com/downingwow/VeilForge-CoA/releases/download/v1.0.1/VeilForge-CoA-v1.0.0-DirectExtract.zip) · [Release notes](https://github.com/downingwow/VeilForge-CoA/releases/tag/v1.0.1)
+[**Download VeilForge-CoA v1.0.1 — Direct Extract**](https://github.com/uncle-bone/VeilForge-CoA/releases/download/v1.0.1/VeilForge-CoA-v1.0.0-DirectExtract.zip) · [Release notes](https://github.com/uncle-bone/VeilForge-CoA/releases/tag/v1.0.1)
 
 VeilForge-CoA is an independent Conquest Reborn adaptation of the open-source [Lumenveil](https://github.com/lumenveil/Lumenveil) graphics mod for the World of Warcraft 3.3.5a client. It packages DXVK, the CoAVolFog/Lumenveil renderer, and a helper that generates lamp and liquid data from the player's own game installation.
 
@@ -49,7 +49,7 @@ The upstream engine attaches to the running client to render its effects. Server
 
 ## Credits and source
 
-- **Conquest Reborn adaptation and maintenance:** [Uncle Bone / downingwow](https://github.com/downingwow)
+- **Conquest Reborn adaptation and maintenance:** [Uncle Bone / uncle-bone](https://github.com/uncle-bone)
 - **Original graphics engine and documentation:** [Lumenveil contributors](https://github.com/lumenveil/Lumenveil)
 - **Underlying upstream renderer:** CoAVolFog by jealous-sound, as credited by Lumenveil.
 - **DXVK:** Bundled with its license notice in the release package.
