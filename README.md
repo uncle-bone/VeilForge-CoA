@@ -2,11 +2,11 @@
 
 **Atmospheric graphics enhancements for Ascension: Conquest of Azeroth — Conquest Reborn.**
 
-[**Download VeilForge-CoA v1.0.0**](https://github.com/downingwow/VeilForge-CoA/releases/download/v1.0.0/VeilForge-CoA-v1.0.0.zip) · [Release notes](https://github.com/downingwow/VeilForge-CoA/releases/tag/v1.0.0)
+[**Download VeilForge-CoA v1.0.1 — Direct Extract**](https://github.com/downingwow/VeilForge-CoA/releases/download/v1.0.1/VeilForge-CoA-v1.0.0-DirectExtract.zip) · [Release notes](https://github.com/downingwow/VeilForge-CoA/releases/tag/v1.0.1)
 
-VeilForge-CoA is an independent Conquest Reborn adaptation of the open-source [Lumenveil](https://github.com/lumenveil/Lumenveil) graphics mod for the World of Warcraft 3.3.5a client. It packages setup and removal scripts, DXVK, the CoAVolFog/Lumenveil renderer, and a helper that generates lamp and liquid data from the player's own game installation.
+VeilForge-CoA is an independent Conquest Reborn adaptation of the open-source [Lumenveil](https://github.com/lumenveil/Lumenveil) graphics mod for the World of Warcraft 3.3.5a client. It packages DXVK, the CoAVolFog/Lumenveil renderer, and a helper that generates lamp and liquid data from the player's own game installation.
 
-> **Release status:** v1.0.0 is published. The package was assembled and its structure checked, but Windows installation and in-game compatibility have not been independently tested. Review `README-FIRST.txt` and the included notices before use.
+> **Release status:** v1.0.1 is published as a direct-extract package. Its structure was checked, but Windows installation and in-game compatibility have not been independently tested. Back up existing graphics files before extracting; this edition does not include the installer/uninstaller workflow from v1.0.0.
 
 ## Graphics features
 
@@ -25,12 +25,13 @@ These are **upstream Lumenveil capabilities**, not new VeilForge-CoA engine feat
 
 ## Package contents
 
-- Installer and uninstaller scripts, with existing graphics files backed up in `VeilForge-Backup`.
-- DXVK included by default.
-- A setup helper that generates lamp and liquid data locally from the player's own game files.
-- CoAVolFog/Lumenveil renderer configuration for the Ascension client.
+- Direct-extract renderer and DXVK files for the folder containing `Ascension.exe`.
+- `VeilForge-Setup.cmd`, which generates lamp and liquid data locally from the player's own game files.
+- License and third-party notices.
 
-The v1.0.0 package targets `Ascension.exe`. Its installation and in-game compatibility still need independent validation.
+Close the game and back up existing graphics DLLs and configuration files before extracting. Extract all contents directly into the game folder, not into a nested folder. Run `VeilForge-Setup.cmd` once, then launch the game. See `README-FIRST.txt` in the ZIP for full instructions.
+
+The package targets `Ascension.exe`. Its Windows installation and in-game compatibility still need independent validation.
 
 ## Upstream visual gallery
 
@@ -42,7 +43,7 @@ The v1.0.0 package targets `Ascension.exe`. Its installation and in-game compati
 
 ## Compatibility and performance
 
-Target: Windows 10/11 and the World of Warcraft **3.3.5a**-based Conquest Reborn client. Windows installation and in-game compatibility of v1.0.0 have not been independently tested. Performance depends on hardware, zone, view distance, and other graphics mods.
+Target: Windows 10/11 and the World of Warcraft **3.3.5a**-based Conquest Reborn client. Windows installation and in-game compatibility of v1.0.1 have not been independently tested. Performance depends on hardware, zone, view distance, and other graphics mods.
 
 The upstream engine attaches to the running client to render its effects. Server rules or anti-cheat software may restrict such modifications; check applicable rules before installation. No affiliation or endorsement by Ascension or Blizzard is implied.
 
