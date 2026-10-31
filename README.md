@@ -2,11 +2,11 @@
 
 **Atmospheric graphics enhancements for Ascension: Conquest of Azeroth — Conquest Reborn.**
 
-[**Download VeilForge-CoA v1.0.1 — Direct Extract**](https://github.com/uncle-bone/VeilForge-CoA/releases/download/v1.0.1/VeilForge-CoA-v1.0.0-DirectExtract.zip) · [Release notes](https://github.com/uncle-bone/VeilForge-CoA/releases/tag/v1.0.1)
+[**Download VeilForge-CoA v1.1.0 — Visual Refinement**](https://github.com/uncle-bone/VeilForge-CoA/releases/download/v1.1.0/VeilForge-CoA-v1.1.0.zip) · [Release notes](https://github.com/uncle-bone/VeilForge-CoA/releases/tag/v1.1.0)
 
 VeilForge-CoA is an independent Conquest Reborn adaptation of the open-source [Lumenveil](https://github.com/lumenveil/Lumenveil) graphics mod for the World of Warcraft 3.3.5a client. It packages DXVK, the CoAVolFog/Lumenveil renderer, and a helper that generates lamp and liquid data from the player's own game installation.
 
-> **Release status:** v1.0.1 is published as a direct-extract package. Its structure was checked, but Windows installation and in-game compatibility have not been independently tested. Back up existing graphics files before extracting; this edition does not include the installer/uninstaller workflow from v1.0.0.
+> **Release status:** v1.1.0 is the current direct-extract package. Sun/moon shafts and terrain shadows are OFF by default to avoid artifact-prone effects; fog and water defaults are conservative. The package includes the setup script, DXVK, and upstream notices. Windows installation and in-game compatibility have not been independently tested. Back up existing graphics files before extracting.
 
 ## Graphics features
 
@@ -43,7 +43,7 @@ The package targets `Ascension.exe`. Its Windows installation and in-game compat
 
 ## Compatibility and performance
 
-Target: Windows 10/11 and the World of Warcraft **3.3.5a**-based Conquest Reborn client. Windows installation and in-game compatibility of v1.0.1 have not been independently tested. Performance depends on hardware, zone, view distance, and other graphics mods.
+Target: Windows 10/11 and the World of Warcraft **3.3.5a**-based Conquest Reborn client. Windows installation and in-game compatibility of v1.1.0 have not been independently tested. Performance depends on hardware, zone, view distance, and other graphics mods.
 
 The upstream engine attaches to the running client to render its effects. Server rules or anti-cheat software may restrict such modifications; check applicable rules before installation. No affiliation or endorsement by Ascension or Blizzard is implied.
 
