@@ -21,7 +21,23 @@ The locally packaged **v1.2.0** build introduces **10 graphics preset levels**, 
 - **The Ctrl+F7 panel is unchanged.** It is compiled into `CoAVolFog.dll`; **there is no in-game 1–10 slider** in this build. Ctrl+F7 still opens the original advanced renderer controls.
 - Artifact-prone **LightShafts, TerrainShadows and GodRays remain disabled at every level**.
 
-**Installation of the local build:** back up your existing DLLs and `CoAVolFog.ini`; extract the v1.2.0 ZIP directly into the folder containing `Ascension.exe`; run `VeilForge-Setup.cmd` if setup has not already been performed; run `VeilForge-Preset-Selector.cmd` to change presets; launch the game. The package defaults to Level 2 without needing to run the selector. The local ZIP has **not** been uploaded to GitHub Releases, so the v1.1.0 download link above remains the published download.
+### Installing or upgrading to the v1.2.0 local build
+
+Already using VeilForge-CoA? **No uninstall is necessary.**
+
+1. Completely close Conquest Reborn.
+2. Get the **v1.2.0 local ZIP** (this version is not yet available on GitHub Releases).
+3. Open the Conquest Reborn game folder containing `Ascension.exe`.
+4. Extract the ZIP **directly into that folder** (not into a nested folder), choosing **Replace existing files** when prompted.
+5. Run `VeilForge-Setup.cmd` to regenerate lamp and liquid data from your local game installation. For existing installations, rerunning setup is optional; it is included here as a refresh step. Wait for it to finish.
+6. Run `VeilForge-Preset-Selector.cmd` and select a graphics level from **1–10**. **Level 2 — Light Enhancement** is the subtle default, so choosing a preset is optional if you want to keep it.
+7. Launch Conquest Reborn normally.
+
+**Quick upgrade:** Extract → Overwrite → Run Setup → Select Preset → Play.
+
+The original **Ctrl+F7** advanced settings panel still works. The new 1–10 presets are selected using the separate Windows preset selector, **not** an in-game Ctrl+F7 slider. Existing custom managed graphics settings may be replaced when a preset is applied. Rerunning the setup script has not been independently validated on every installation.
+
+**Release availability:** v1.1.0 remains the latest GitHub Release; v1.2.0 is currently a **local build only**. The download link at the top of this README points to v1.1.0, not v1.2.0.
 
 **Validation:** The presets are conservative configuration profiles, **not GPU-benchmarked or independently tested in-game**. Performance and visual results vary by hardware. See `README-FIRST.txt` and `CHANGELOG-VeilForge.txt` inside the local ZIP for details.
 
