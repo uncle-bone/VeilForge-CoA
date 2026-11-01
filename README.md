@@ -8,6 +8,8 @@ VeilForge-CoA is an independent Conquest Reborn adaptation of the open-source [L
 
 > **Release status: v1.1.0 remains the latest published GitHub Release. A separate **v1.2.0 local preset build** has been assembled but is **not published as a GitHub Release**. Sun/moon shafts and terrain shadows are OFF by default to avoid artifact-prone effects; fog and water defaults are conservative. The package includes the setup script, DXVK, and upstream notices. Windows installation and in-game compatibility have not been independently tested. Back up existing graphics files before extracting.
 
+> **In-game preset status:** The requested 1–10 selector **inside Ctrl+F7 is not implemented** in the v1.2.0 local package. The included preset selector is external and does not satisfy the intended in-game feature. Do **not** describe v1.2.0 as a finished in-game preset release or stable upgrade. The Ctrl+F7 UI requires a rebuilt CoAVolFog renderer. Level 2 is currently a configuration default, not an in-game UI selection.
+
 ## v1.2.0 local build — graphics presets (not yet on GitHub Releases)
 
 The locally packaged **v1.2.0** build introduces **10 graphics preset levels**, with **Level 2/10** installed as the subtle, first-run default rather than the earlier midrange starter configuration.
