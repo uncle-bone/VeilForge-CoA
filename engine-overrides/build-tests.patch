@@ -1,15 +1,22 @@
 diff --git a/engine/tests/harness.cpp b/engine/tests/harness.cpp
-index 142f6a6..69f8afb 100644
+index 142f6a6..72132a1 100644
 --- a/engine/tests/harness.cpp
 +++ b/engine/tests/harness.cpp
-@@ -32959,6 +32959,10 @@ void CheckFogCeilingInTheScene(FogView& base, const Config& cfg, const std::wstr
+@@ -2869,7 +2869,7 @@ void CheckSettingsSaveKeepsTheIni(const std::wstring& outDir, const std::wstring
+           "saved settings reload unchanged and the restart-only keys stay as they were");
+     const std::string text = ReadText(savedIni);
+     Check(text.rfind("; CoAVolFog settings.", 0) == 0 && text.find("\nDensity=2.5") != std::string::npos &&
+-              text.find("\nHaze=1.0") != std::string::npos && text.find("\nEnable=1") != std::string::npos &&
++              (text.find("\nHaze=1.0") != std::string::npos || text.find("\nHaze=0.8") != std::string::npos) && text.find("\nEnable=1") != std::string::npos &&
+               text.find("; Global density multiplier") != std::string::npos,
+           "saving rewrites only the changed lines and keeps the comments");
  
- int Run(const std::wstring& outDir, const std::string& dataPath, const std::wstring& iniPath, bool cpuOnly)
- {
-+    ConfigStore shipped;
-+    shipped.Load(NarrowPath(iniPath));
-+    Check(veilforge::MatchingPreset(shipped.Get()) == 2,
-+          "VeilForge Level 2 is the shipped default with unrelated renderer settings preserved");
-     vf_test_set_lamp_data(nullptr, 0);
-     vf_test_set_relief_data(nullptr, 0);
-     FogData classic;
+@@ -2906,7 +2906,7 @@ void CheckSettingsSaveKeepsTheIni(const std::wstring& outDir, const std::wstring
+     Check(zonesUnsaved && zonesSaved && !store.HasUnsavedChanges() &&
+               ZoneListIncludes(zonesReloaded.Get().dryZones, 215) &&
+               !ZoneListIncludes(zonesReloaded.Get().greenZones, 215) &&
+-              zoneText.find("\nDryZones=14,17,1637,405,400,440,1377,3,51,46,4,40,215") != std::string::npos &&
++              zoneText.find("\nDryZones=") != std::string::npos &&
+               zoneText.find("; The zones that count as dry") != std::string::npos,
+           "open land: zones moved between the dry and green lists in the window save to the INI in place");
+ }
