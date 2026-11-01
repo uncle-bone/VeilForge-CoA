@@ -1,30 +1,52 @@
 # VeilForge-CoA
 
-Atmospheric graphics enhancements for Ascension: Conquest of Azeroth / Conquest Reborn, based on the GPL-2.0 Lumenveil renderer for the 32-bit World of Warcraft 3.3.5a client.
+Atmospheric graphics enhancements for Ascension: Conquest of Azeroth / Conquest Reborn. VeilForge-CoA is based on the GPL-2.0 Lumenveil renderer for the 32-bit World of Warcraft 3.3.5a client.
 
 ## Release status
 
 - **v1.1.0** is the latest published GitHub release.
-- **v1.2.0** is a local package with Level 2 as its default and a separate Windows preset selector. Its Ctrl+F7 panel does not contain the preset selector.
-- **v1.3.0** is in development. This source adds an in-game ten-level preset selector to Ctrl+F7. The replacement DLL and install-ready ZIP are pending a successful Windows build and renderer harness run. Do not treat the v1.2.0 DLL as containing this feature.
+- **v1.2.0** is the previous local package. It used a separate Windows preset selector.
+- **v1.3.0** adds ten in-game graphics profiles to the Ctrl+F7 panel. Its Windows x86 build and automated checks have passed, and the install-ready ZIP is available from the successful [GitHub Actions build](https://github.com/uncle-bone/VeilForge-CoA/actions). In-game behavior and hardware-specific performance still need player testing.
 
-## v1.3.0 preset design
+## v1.3.0 graphics presets
 
-The in-game selector applies ten separate profiles to 60 renderer-supported graphics settings. Level 2 - Subtle is the packaged default. Quality steps between the renderer's three supported modes; banks, liquid depth, and costly wet-surface and model-relief effects turn on in stages. Profiles preserve zone configuration, hotkeys, diagnostics, and other unmanaged settings. Light shafts, terrain shadows, and radial god rays stay off in every profile.
+The Ctrl+F7 panel now includes ten individually tuned profiles covering 60 renderer settings. **Level 2 — Subtle** is the packaged default. Settings are staged according to visual impact and cost; the profiles are not made by increasing every option by a fixed percentage. Costly wet-surface and model-relief effects turn on at higher levels. Light shafts, terrain shadows, and radial god rays remain disabled in every profile.
 
-All existing Ctrl+F7 controls remain editable. The selector reports **Custom** when managed settings stop matching a profile. Presets and manual edits use the renderer's existing Save/Revert controls. There is no need for an external Windows selector or manual INI editing.
+Presets only change their managed graphics settings and preserve zone configuration, hotkeys, diagnostics, and other unrelated settings. All advanced controls remain editable. If you change managed settings so they no longer match a profile, the selector shows **Custom**. Use **Save** in Ctrl+F7 to keep a preset or your manual changes.
 
-The profiles are individually staged from the supplied Level 1-10 configurations and checked against the renderer's live setting registry and ranges. They have not been benchmarked on the user's hardware or verified in-game; no fixed FPS result is promised.
+## Upgrade instructions
+
+Already have VeilForge-CoA installed? **You do not need to uninstall the previous version.**
+
+1. Completely close Conquest Reborn.
+2. Download the latest VeilForge-CoA ZIP from the [GitHub Actions build](https://github.com/uncle-bone/VeilForge-CoA/actions) or the Releases page when v1.3.0 is published.
+3. Open your Conquest Reborn installation folder, where `Ascension.exe` is located.
+4. Extract the ZIP directly into that folder.
+5. Choose **Replace all existing files** when prompted. Back up your existing `CoAVolFog.ini` first if you want to keep a copy of your custom settings.
+6. Run `VeilForge-Setup.cmd` to refresh the generated lamp and liquid data. This is recommended when upgrading and required for a new installation.
+7. Launch Conquest Reborn and press **Ctrl+F7** to choose one of the ten graphics levels.
+8. Press **Save** in the panel to persist your selection.
+
+### Recommended starting point: Level 2 — Subtle
+
+Level 2 provides restrained visual improvements while keeping performance in mind. Higher levels enable additional effects in stages; choose a level based on your system and preference.
+
+**Additional notes**
+
+- Continue using the Ctrl+F7 panel for advanced graphics settings and preset selection.
+- The old `VeilForge-Preset-Selector.cmd` is not used in v1.3.0; select levels in-game with Ctrl+F7.
+- Existing custom settings can be kept by preserving your old `CoAVolFog.ini`. If its settings do not match a preset, the panel will show **Custom**.
+- New installations should run `VeilForge-Setup.cmd` once before launching the game.
+
+**That’s it: Extract → Replace → Run Setup → Select a level in Ctrl+F7 → Save → Play!**
 
 ## Build and validation
 
-The project pins the upstream Lumenveil source revision and contains the exact renderer overlay, ten source profiles, build patch, validation script, and Windows workflow. The workflow builds the 32-bit renderer and setup utility with the Windows SDK and `fxc`, runs the upstream CPU-only harness plus preset tests, validates the DLL PE architecture, and creates a direct-extract ZIP from the existing v1.2.0 package.
+The project pins the upstream Lumenveil source revision and includes the renderer overlay, ten profile files, validation scripts, and a Windows build workflow. The workflow builds the 32-bit renderer and setup utility, runs the upstream CPU-only harness and preset checks, validates the DLL architecture, and packages a direct-extract ZIP from the supplied v1.2.0 package.
 
-The ZIP will include the rebuilt `CoAVolFog.dll`, Level 2 default INI, original DXVK files, renderer setup utility, and all license notices. The external preset selector will be removed from that package.
+The ZIP includes the rebuilt `CoAVolFog.dll`, the Level 2 default INI, original DXVK files, setup utility, and license notices. It does not include the old external preset selector.
 
-## Install
-
-When a v1.3.0 release is available: close the game, back up existing graphics files and `CoAVolFog.ini`, extract the ZIP directly beside `Ascension.exe`, and run `VeilForge-Setup.cmd` for a first-time installation. Launch the game and press Ctrl+F7 to select a profile. Use **Save** to persist preset or manual changes. Existing custom settings can be retained by keeping the existing INI; the panel will show Custom if its managed values do not match a profile.
+The profiles have not been benchmarked on the user's hardware or verified in-game; no fixed FPS result is promised.
 
 ## Features
 
@@ -32,7 +54,7 @@ When a v1.3.0 release is available: close the game, back up existing graphics fi
 - Night lights from lamps, torches, windows, and spell effects.
 - Wind-driven water, reflections, rain effects, wet surfaces, and optional relief.
 - Per-zone looks and regional controls.
-- Ctrl+F7 settings; Ctrl+F12 effect comparison.
+- Ctrl+F7 settings and presets; Ctrl+F12 effect comparison.
 
 The renderer reads local game data to create lamp and liquid maps. It does not modify the game executable. Compatibility or server rules may restrict graphics modifications; check applicable rules before installing.
 
