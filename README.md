@@ -1,99 +1,47 @@
 # VeilForge-CoA
 
-**Atmospheric graphics enhancements for Ascension: Conquest of Azeroth — Conquest Reborn.**
+Atmospheric graphics enhancements for Ascension: Conquest of Azeroth / Conquest Reborn, based on the GPL-2.0 Lumenveil renderer for the 32-bit World of Warcraft 3.3.5a client.
 
-[**Download VeilForge-CoA v1.1.0 — Visual Refinement**](https://github.com/uncle-bone/VeilForge-CoA/releases/download/v1.1.0/VeilForge-CoA-v1.1.0.zip) · [Release notes](https://github.com/uncle-bone/VeilForge-CoA/releases/tag/v1.1.0)
+## Release status
 
-VeilForge-CoA is an independent Conquest Reborn adaptation of the open-source [Lumenveil](https://github.com/lumenveil/Lumenveil) graphics mod for the World of Warcraft 3.3.5a client. It packages DXVK, the CoAVolFog/Lumenveil renderer, and a helper that generates lamp and liquid data from the player's own game installation.
+- **v1.1.0** is the latest published GitHub release.
+- **v1.2.0** is a local package with Level 2 as its default and a separate Windows preset selector. Its Ctrl+F7 panel does not contain the preset selector.
+- **v1.3.0** is in development. This source adds an in-game ten-level preset selector to Ctrl+F7. The replacement DLL and install-ready ZIP are pending a successful Windows build and renderer harness run. Do not treat the v1.2.0 DLL as containing this feature.
 
-> **Release status: v1.1.0 remains the latest published GitHub Release. A separate **v1.2.0 local preset build** has been assembled but is **not published as a GitHub Release**. Sun/moon shafts and terrain shadows are OFF by default to avoid artifact-prone effects; fog and water defaults are conservative. The package includes the setup script, DXVK, and upstream notices. Windows installation and in-game compatibility have not been independently tested. Back up existing graphics files before extracting.
+## v1.3.0 preset design
 
-> **In-game preset status:** The requested 1–10 selector **inside Ctrl+F7 is not implemented** in the v1.2.0 local package. The included preset selector is external and does not satisfy the intended in-game feature. Do **not** describe v1.2.0 as a finished in-game preset release or stable upgrade. The Ctrl+F7 UI requires a rebuilt CoAVolFog renderer. Level 2 is currently a configuration default, not an in-game UI selection.
+The in-game selector applies ten separate profiles to 60 renderer-supported graphics settings. Level 2 - Subtle is the packaged default. Quality steps between the renderer's three supported modes; banks, liquid depth, and costly wet-surface and model-relief effects turn on in stages. Profiles preserve zone configuration, hotkeys, diagnostics, and other unmanaged settings. Light shafts, terrain shadows, and radial god rays stay off in every profile.
 
-## v1.2.0 local build — graphics presets (not yet on GitHub Releases)
+All existing Ctrl+F7 controls remain editable. The selector reports **Custom** when managed settings stop matching a profile. Presets and manual edits use the renderer's existing Save/Revert controls. There is no need for an external Windows selector or manual INI editing.
 
-The locally packaged **v1.2.0** build introduces **10 graphics preset levels**, with **Level 2/10** installed as the subtle, first-run default rather than the earlier midrange starter configuration.
+The profiles are individually staged from the supplied Level 1-10 configurations and checked against the renderer's live setting registry and ranges. They have not been benchmarked on the user's hardware or verified in-game; no fixed FPS result is promised.
 
-- **Levels 1–2:** minimal to subtle enhancement, with Level 2 as the default.
-- **Levels 3–5:** progressively enhanced visuals.
-- **Level 6:** intended Golden Standard profile.
-- **Levels 7–10:** increasingly demanding visual options; higher levels may reduce FPS.
-- **60+ managed configuration settings** are adjusted through preset snapshots, while custom settings, region lists, keybindings and other unmanaged values are preserved.
-- **`VeilForge-Preset-Selector.cmd`** is a Windows-based 1–10 preset selector. It updates `CoAVolFog.ini` while keeping a backup of the initial configuration for restoration.
-- **The Ctrl+F7 panel is unchanged.** It is compiled into `CoAVolFog.dll`; **there is no in-game 1–10 slider** in this build. Ctrl+F7 still opens the original advanced renderer controls.
-- Artifact-prone **LightShafts, TerrainShadows and GodRays remain disabled at every level**.
+## Build and validation
 
-### Installing or upgrading to the v1.2.0 local build
+The project pins the upstream Lumenveil source revision and contains the exact renderer overlay, ten source profiles, build patch, validation script, and Windows workflow. The workflow builds the 32-bit renderer and setup utility with the Windows SDK and `fxc`, runs the upstream CPU-only harness plus preset tests, validates the DLL PE architecture, and creates a direct-extract ZIP from the existing v1.2.0 package.
 
-Already using VeilForge-CoA? **No uninstall is necessary.**
+The ZIP will include the rebuilt `CoAVolFog.dll`, Level 2 default INI, original DXVK files, renderer setup utility, and all license notices. The external preset selector will be removed from that package.
 
-1. Completely close Conquest Reborn.
-2. Get the **v1.2.0 local ZIP** (this version is not yet available on GitHub Releases).
-3. Open the Conquest Reborn game folder containing `Ascension.exe`.
-4. Extract the ZIP **directly into that folder** (not into a nested folder), choosing **Replace existing files** when prompted.
-5. Run `VeilForge-Setup.cmd` to regenerate lamp and liquid data from your local game installation. For existing installations, rerunning setup is optional; it is included here as a refresh step. Wait for it to finish.
-6. Run `VeilForge-Preset-Selector.cmd` and select a graphics level from **1–10**. **Level 2 — Light Enhancement** is the subtle default, so choosing a preset is optional if you want to keep it.
-7. Launch Conquest Reborn normally.
+## Install
 
-**Quick upgrade:** Extract → Overwrite → Run Setup → Select Preset → Play.
+When a v1.3.0 release is available: close the game, back up existing graphics files and `CoAVolFog.ini`, extract the ZIP directly beside `Ascension.exe`, and run `VeilForge-Setup.cmd` for a first-time installation. Launch the game and press Ctrl+F7 to select a profile. Use **Save** to persist preset or manual changes. Existing custom settings can be retained by keeping the existing INI; the panel will show Custom if its managed values do not match a profile.
 
-The original **Ctrl+F7** advanced settings panel still works. The new 1–10 presets are selected using the separate Windows preset selector, **not** an in-game Ctrl+F7 slider. Existing custom managed graphics settings may be replaced when a preset is applied. Rerunning the setup script has not been independently validated on every installation.
+## Features
 
-**Release availability:** v1.1.0 remains the latest GitHub Release; v1.2.0 is currently a **local build only**. The download link at the top of this README points to v1.1.0, not v1.2.0.
+- Volumetric fog, ground mist, and weather-aware haze.
+- Night lights from lamps, torches, windows, and spell effects.
+- Wind-driven water, reflections, rain effects, wet surfaces, and optional relief.
+- Per-zone looks and regional controls.
+- Ctrl+F7 settings; Ctrl+F12 effect comparison.
 
-**Validation:** The presets are conservative configuration profiles, **not GPU-benchmarked or independently tested in-game**. Performance and visual results vary by hardware. See `README-FIRST.txt` and `CHANGELOG-VeilForge.txt` inside the local ZIP for details.
+The renderer reads local game data to create lamp and liquid maps. It does not modify the game executable. Compatibility or server rules may restrict graphics modifications; check applicable rules before installing.
 
-## Graphics features
+## Credits and licenses
 
-The Lumenveil engine provides:
+- VeilForge-CoA adaptation and maintenance: Uncle Bone ([uncle-bone](https://github.com/uncle-bone)).
+- Renderer and original documentation: [Lumenveil contributors](https://github.com/lumenveil/Lumenveil).
+- DXVK is bundled with its license notice.
 
-- **3D volumetric fog:** ground mist, weather-aware haze, wind-driven fog, and distance atmosphere.
-- **Sun and moon shafts:** light filtering past trees, buildings, and terrain.
-- **Night illumination:** lanterns, torches, windows, and colored environmental light.
-- **Spell lighting:** glowing projectiles and spell effects light nearby surfaces.
-- **Water effects:** wind-driven waves, reflections, rain ripples, and sunlight glitter.
-- **Optional wet surfaces and relief:** additional surface shading and simulated depth.
-- **Regional looks:** per-zone visual tuning and day/night atmosphere.
-- **Interactive controls:** `Ctrl+F7` opens the settings panel; `Ctrl+F12` compares enabled/disabled effects.
+Lumenveil is GPL-2.0. The exact upstream revision and VeilForge source overlays are identified in this repository and in the release package's `VeilForge-SOURCE.txt`. Preserve the bundled license and third-party notices.
 
-These are **upstream Lumenveil capabilities**, not new VeilForge-CoA engine features.
-
-## Package contents
-
-- Direct-extract renderer and DXVK files for the folder containing `Ascension.exe`.
-- `VeilForge-Setup.cmd`, which generates lamp and liquid data locally from the player's own game files.
-- License and third-party notices.
-- **Local v1.2.0 package only:** `VeilForge-Preset-Selector.cmd`, `VeilForge-Apply-Preset.ps1`, and `VeilForge-Presets/Level-01.ini` through `Level-10.ini`.
-
-Close the game and back up existing graphics DLLs and configuration files before extracting. Extract all contents directly into the game folder, not into a nested folder. Run `VeilForge-Setup.cmd` once, then launch the game. See `README-FIRST.txt` in the ZIP for full instructions.
-
-The package targets `Ascension.exe`. Its Windows installation and in-game compatibility still need independent validation.
-
-## Upstream visual gallery
-
-[Browse the Lumenveil before-and-after comparison gallery](https://github.com/lumenveil/Lumenveil#before-and-after)
-
-[View the upstream screenshot collection](https://github.com/lumenveil/Lumenveil/tree/main/docs/screenshots)
-
-**Media attribution:** Images belong to their respective creators. The upstream screenshots were captured using Project Reforged HD assets and ReShade alongside Lumenveil. They do **not** depict the standard Conquest Reborn installation, and results will differ. This project will add separately labeled CR screenshots and videos when available.
-
-## Compatibility and performance
-
-Target: Windows 10/11 and the World of Warcraft **3.3.5a**-based Conquest Reborn client. Windows installation and in-game compatibility of v1.1.0 have not been independently tested. Performance depends on hardware, zone, view distance, and other graphics mods.
-
-The upstream engine attaches to the running client to render its effects. Server rules or anti-cheat software may restrict such modifications; check applicable rules before installation. No affiliation or endorsement by Ascension or Blizzard is implied.
-
-## Credits and source
-
-- **Conquest Reborn adaptation and maintenance:** [Uncle Bone / uncle-bone](https://github.com/uncle-bone)
-- **Original graphics engine and documentation:** [Lumenveil contributors](https://github.com/lumenveil/Lumenveil)
-- **Underlying upstream renderer:** CoAVolFog by jealous-sound, as credited by Lumenveil.
-- **DXVK:** Bundled with its license notice in the release package.
-
-Upstream Lumenveil is licensed under the **GNU General Public License v2 (GPL-2.0)**. Any redistributed or modified engine binaries must be accompanied by the corresponding source and applicable license and third-party notices. VeilForge-CoA will retain upstream attribution rather than implying independent authorship of the engine.
-
-[Original Lumenveil license](https://github.com/lumenveil/Lumenveil/blob/main/LICENSE) · [Third-party notices](https://github.com/lumenveil/Lumenveil/blob/main/THIRD-PARTY-NOTICES.md) · [Original legal notes](https://github.com/lumenveil/Lumenveil/blob/main/LEGAL.md)
-
----
-
-*Independent community project for Conquest Reborn.*
+[Lumenveil license](https://github.com/lumenveil/Lumenveil/blob/main/LICENSE) · [Third-party notices](https://github.com/lumenveil/Lumenveil/blob/main/THIRD-PARTY-NOTICES.md) · [Lumenveil legal notes](https://github.com/lumenveil/Lumenveil/blob/main/LEGAL.md)
