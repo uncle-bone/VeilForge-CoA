@@ -652,7 +652,7 @@ inline constexpr const PresetValue* kPresets[] = {
     kPreset09,
     kPreset10,
 };
-inline constexpr std::size_t kPresetSettingCount = sizeof(kPreset1) / sizeof(kPreset1[0]);
+inline constexpr std::size_t kPresetSettingCount = sizeof(kPreset01) / sizeof(kPreset01[0]);
 inline constexpr const char* kPresetNames[] = {
     "Level 1 - Minimal",
     "Level 2 - Subtle (Default)",
