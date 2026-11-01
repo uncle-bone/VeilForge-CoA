@@ -25,7 +25,9 @@ Copy-Item (Join-Path $overrides 'settings_panel.cpp') (Join-Path $source 'settin
 Copy-Item (Join-Path $overrides 'presets.cpp') (Join-Path $source 'presets.cpp') -Force
 Copy-Item (Join-Path $overrides 'presets.h') (Join-Path $source 'presets.h') -Force
 Copy-Item (Join-Path $overrides 'veilforge_presets.h') (Join-Path $source 'veilforge_presets.h') -Force
-Copy-Item (Join-Path $root 'presets\Level-02.ini') (Join-Path $upstream 'engine\CoAVolFog.ini') -Force
+# Run the upstream defaults suite with its stock INI; it asserts that file against upstream defaults.
+# Level 2 has a separate exact-match check in the extended harness.
+Copy-Item (Join-Path $upstream 'engine\CoAVolFog.ini') (Join-Path $upstream 'engine\CoAVolFog.upstream.ini') -Force
 $patch = Join-Path $overrides 'build-tests.patch'
 Invoke-Native 'git' @('-C', $upstream, 'apply', '--check', $patch)
 Invoke-Native 'git' @('-C', $upstream, 'apply', $patch)
@@ -34,7 +36,14 @@ Push-Location $upstream
 try {
     & $buildScript -Version $Version -CpuTestsOnly
     if ($LASTEXITCODE) { throw "Upstream build failed (exit $LASTEXITCODE)" }
-} finally { Pop-Location }
+    $harness = Join-Path $upstream 'build\engine\Release\vfog_harness.exe'
+    $out = Join-Path $upstream 'build\engine\harness-veilforge'
+    Invoke-Native $harness @('--cpu-only', '--out', $out, '--data', (Join-Path $upstream 'engine\data\fogdata.bin'), '--ini', (Join-Path $root 'presets\Level-02.ini'))
+} finally {
+    $stockIni = Join-Path $upstream 'engine\CoAVolFog.upstream.ini'
+    if (Test-Path $stockIni) { Move-Item -LiteralPath $stockIni -Destination (Join-Path $upstream 'engine\CoAVolFog.ini') -Force }
+    Pop-Location
+}
 
 $bin = Join-Path $upstream 'build\engine\Release'
 $lamp = Join-Path $upstream 'build\lamp_extract\Release\lamp_extract.exe'
