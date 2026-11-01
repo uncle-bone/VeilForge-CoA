@@ -1,0 +1,80 @@
+diff --git a/engine/CMakeLists.txt b/engine/CMakeLists.txt
+index 5b5880a..e12ee6e 100644
+--- a/engine/CMakeLists.txt
++++ b/engine/CMakeLists.txt
+@@ -171,6 +171,7 @@ add_library(CoAVolFog SHARED
+     src/log.cpp
+     src/material_catalog.cpp
+     src/overlay.cpp
++    src/presets.cpp
+     src/region_panel.cpp
+     src/region_settings.cpp
+     src/region_zones.cpp
+@@ -210,7 +211,7 @@ vf_version_resource(version version.dll VFT_DLL
+ 
+ add_executable(vfog_harness tests/harness.cpp src/belt_lantern.cpp src/cloud_noise.cpp src/config.cpp
+     src/corpse_lights.cpp src/drift_noise.cpp src/effect_lights.cpp src/fog_data.cpp src/fog_model.cpp src/lamp_catalog.cpp
+-    src/lamp_selection.cpp src/lamp_tiles.cpp src/liquid_map.cpp src/log.cpp src/material_catalog.cpp src/region_settings.cpp
++    src/lamp_selection.cpp src/lamp_tiles.cpp src/liquid_map.cpp src/log.cpp src/material_catalog.cpp src/presets.cpp src/region_settings.cpp
+     src/region_zones.cpp src/relief_catalog.cpp src/runtime_heights.cpp
+     src/shader_splice.cpp src/spots.cpp
+     src/terrain_shadow.cpp src/water_lamps.cpp src/water_rain.cpp
+diff --git a/engine/tests/harness.cpp b/engine/tests/harness.cpp
+index 142f6a6..9df3383 100644
+--- a/engine/tests/harness.cpp
++++ b/engine/tests/harness.cpp
+@@ -2,6 +2,7 @@
+ #include "client_shadows.h"
+ #include "cloud_noise.h"
+ #include "config.h"
++#include "presets.h"
+ #include "corpse_lights.h"
+ #include "draw_log.h"
+ #include "drift_noise.h"
+@@ -209,6 +210,38 @@ void Check(bool ok, const char* what)
+         ++g_failures;
+ }
+ 
++void CheckVeilForgePresets()
++{
++    Config original;
++    original.enable = false;
++    original.debugView = 4;
++    original.logLevel = 2;
++    original.overlayKey.virtualKey = 0x75;
++    original.dryZones.count = 1;
++    original.dryZones.ids[0] = 1234;
++    original.zoneDensity.otherZones = 2.75f;
++
++    for (int level = 1; level <= 10; ++level)
++    {
++        Config applied = original;
++        Check(veilforge::ApplyPreset(applied, level), "VeilForge preset changes managed settings");
++        Check(veilforge::MatchingPreset(applied) == level, "VeilForge preset is recognized after applying");
++        Check(!applied.enable && applied.debugView == original.debugView && applied.logLevel == original.logLevel &&
++                  applied.overlayKey.virtualKey == original.overlayKey.virtualKey &&
++                  applied.dryZones.count == original.dryZones.count && applied.dryZones.ids[0] == original.dryZones.ids[0] &&
++                  applied.zoneDensity.otherZones == original.zoneDensity.otherZones,
++              "VeilForge preset preserves unrelated settings and zone data");
++
++        const int density = FindLiveSetting("Density");
++        SetLiveSettingValue(applied, density, LiveSettingValue(applied, density) + 0.01f);
++        Check(veilforge::MatchingPreset(applied) == 0, "VeilForge manual edits are identified as Custom");
++    }
++
++    Config unchanged = original;
++    Check(!veilforge::ApplyPreset(unchanged, 0) && !veilforge::ApplyPreset(unchanged, 11),
++          "VeilForge rejects invalid preset levels");
++}
++
+ int g_skips = 0;
+ 
+ void Skip(const char* what)
+@@ -32959,6 +32992,7 @@ void CheckFogCeilingInTheScene(FogView& base, const Config& cfg, const std::wstr
+ 
+ int Run(const std::wstring& outDir, const std::string& dataPath, const std::wstring& iniPath, bool cpuOnly)
+ {
++    CheckVeilForgePresets();
+     vf_test_set_lamp_data(nullptr, 0);
+     vf_test_set_relief_data(nullptr, 0);
+     FogData classic;
