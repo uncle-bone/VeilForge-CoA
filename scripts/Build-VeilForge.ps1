@@ -34,11 +34,8 @@ try {
     & $buildScript -Version $Version -CpuTestsOnly
     if ($LASTEXITCODE) { throw "Upstream build failed (exit $LASTEXITCODE)" }
     $harness = Join-Path $upstream 'build\engine\Release\vfog_harness.exe'
-    $out = Join-Path $upstream 'build\engine\harness-veilforge'
-    Invoke-Native $harness @('--cpu-only', '--out', $out, '--data', (Join-Path $upstream 'engine\data\fogdata.bin'), '--ini', (Join-Path $root 'presets\Level-02.ini'))
-} finally {
-    Pop-Location
-}
+    Invoke-Native $harness @('--veilforge-profile', (Join-Path $root 'presets\Level-02.ini'))
+} finally { Pop-Location }
 
 $bin = Join-Path $upstream 'build\engine\Release'
 $lamp = Join-Path $upstream 'build\lamp_extract\Release\lamp_extract.exe'
