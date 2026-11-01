@@ -6,7 +6,24 @@
 
 VeilForge-CoA is an independent Conquest Reborn adaptation of the open-source [Lumenveil](https://github.com/lumenveil/Lumenveil) graphics mod for the World of Warcraft 3.3.5a client. It packages DXVK, the CoAVolFog/Lumenveil renderer, and a helper that generates lamp and liquid data from the player's own game installation.
 
-> **Release status:** v1.1.0 is the current direct-extract package. Sun/moon shafts and terrain shadows are OFF by default to avoid artifact-prone effects; fog and water defaults are conservative. The package includes the setup script, DXVK, and upstream notices. Windows installation and in-game compatibility have not been independently tested. Back up existing graphics files before extracting.
+> **Release status: v1.1.0 remains the latest published GitHub Release. A separate **v1.2.0 local preset build** has been assembled but is **not published as a GitHub Release**. Sun/moon shafts and terrain shadows are OFF by default to avoid artifact-prone effects; fog and water defaults are conservative. The package includes the setup script, DXVK, and upstream notices. Windows installation and in-game compatibility have not been independently tested. Back up existing graphics files before extracting.
+
+## v1.2.0 local build — graphics presets (not yet on GitHub Releases)
+
+The locally packaged **v1.2.0** build introduces **10 graphics preset levels**, with **Level 2/10** installed as the subtle, first-run default rather than the earlier midrange starter configuration.
+
+- **Levels 1–2:** minimal to subtle enhancement, with Level 2 as the default.
+- **Levels 3–5:** progressively enhanced visuals.
+- **Level 6:** intended Golden Standard profile.
+- **Levels 7–10:** increasingly demanding visual options; higher levels may reduce FPS.
+- **60+ managed configuration settings** are adjusted through preset snapshots, while custom settings, region lists, keybindings and other unmanaged values are preserved.
+- **`VeilForge-Preset-Selector.cmd`** is a Windows-based 1–10 preset selector. It updates `CoAVolFog.ini` while keeping a backup of the initial configuration for restoration.
+- **The Ctrl+F7 panel is unchanged.** It is compiled into `CoAVolFog.dll`; **there is no in-game 1–10 slider** in this build. Ctrl+F7 still opens the original advanced renderer controls.
+- Artifact-prone **LightShafts, TerrainShadows and GodRays remain disabled at every level**.
+
+**Installation of the local build:** back up your existing DLLs and `CoAVolFog.ini`; extract the v1.2.0 ZIP directly into the folder containing `Ascension.exe`; run `VeilForge-Setup.cmd` if setup has not already been performed; run `VeilForge-Preset-Selector.cmd` to change presets; launch the game. The package defaults to Level 2 without needing to run the selector. The local ZIP has **not** been uploaded to GitHub Releases, so the v1.1.0 download link above remains the published download.
+
+**Validation:** The presets are conservative configuration profiles, **not GPU-benchmarked or independently tested in-game**. Performance and visual results vary by hardware. See `README-FIRST.txt` and `CHANGELOG-VeilForge.txt` inside the local ZIP for details.
 
 ## Graphics features
 
@@ -28,6 +45,7 @@ These are **upstream Lumenveil capabilities**, not new VeilForge-CoA engine feat
 - Direct-extract renderer and DXVK files for the folder containing `Ascension.exe`.
 - `VeilForge-Setup.cmd`, which generates lamp and liquid data locally from the player's own game files.
 - License and third-party notices.
+- **Local v1.2.0 package only:** `VeilForge-Preset-Selector.cmd`, `VeilForge-Apply-Preset.ps1`, and `VeilForge-Presets/Level-01.ini` through `Level-10.ini`.
 
 Close the game and back up existing graphics DLLs and configuration files before extracting. Extract all contents directly into the game folder, not into a nested folder. Run `VeilForge-Setup.cmd` once, then launch the game. See `README-FIRST.txt` in the ZIP for full instructions.
 
