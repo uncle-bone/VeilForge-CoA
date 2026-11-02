@@ -1,5 +1,5 @@
 #Requires -Version 5.1
-param([string]$Version = '1.3.0')
+param([string]$Version = '1.3.1')
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 $upstream = Join-Path $root 'upstream\Lumenveil'
@@ -53,6 +53,7 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 Copy-Item (Join-Path $bin 'CoAVolFog.dll'), (Join-Path $bin 'version.dll') $stage -Force
 Copy-Item $lamp (Join-Path $stage 'Lumenveil\lamp_extract.exe') -Force
 Copy-Item (Join-Path $root 'presets\Level-02.ini') (Join-Path $stage 'CoAVolFog.ini') -Force
+Copy-Item (Join-Path $PSScriptRoot 'VeilForge-Setup.cmd'), (Join-Path $PSScriptRoot 'VeilForge-Uninstall.cmd') $stage -Force
 
 foreach ($obsolete in @('VeilForge-Preset-Selector.cmd', 'VeilForge-Apply-Preset.ps1')) {
     $path = Join-Path $stage $obsolete
@@ -89,6 +90,12 @@ on hardware and has not been benchmarked on your system.
 This renderer targets the 32-bit WoW 3.3.5a client. Always back up existing
 files before installing or upgrading. For source and license details, see
 VeilForge-SOURCE.txt and the bundled Lumenveil notices.
+
+UNINSTALL
+1. Close the game and run VeilForge-Uninstall.cmd from this folder.
+2. Confirm removal. It removes VeilForge files and generated data, but leaves
+   d3d9.dll, dxgi.dll, dxvk.conf, and the DXVK notice untouched because these
+   may be shared with other graphics tools.
 "@
 [IO.File]::WriteAllText((Join-Path $stage 'README-FIRST.txt'), $readme, [Text.UTF8Encoding]::new($false))
 
@@ -136,8 +143,14 @@ $zip = Join-Path $dist "VeilForge-CoA-v$Version.zip"
 $archive = [IO.Compression.ZipFile]::OpenRead($zip)
 try {
     $entries = @($archive.Entries | ForEach-Object FullName)
-    foreach ($entry in @('CoAVolFog.dll', 'CoAVolFog.ini', 'version.dll', 'd3d9.dll', 'dxgi.dll', 'VeilForge-Setup.cmd', 'VeilForge-SOURCE.txt')) {
+    foreach ($entry in @('CoAVolFog.dll', 'CoAVolFog.ini', 'version.dll', 'd3d9.dll', 'dxgi.dll', 'VeilForge-Setup.cmd', 'VeilForge-Uninstall.cmd', 'VeilForge-SOURCE.txt')) {
         if ($entries -notcontains $entry) { throw "Install archive is missing $entry" }
+    }
+    foreach ($scriptName in @('VeilForge-Setup.cmd', 'VeilForge-Uninstall.cmd')) {
+        $scriptText = [IO.File]::ReadAllText((Join-Path $stage $scriptName))
+        foreach ($exeName in @('Wow.exe', 'Ascension.exe')) {
+            if (-not $scriptText.Contains($exeName)) { throw "$scriptName does not support $exeName" }
+        }
     }
     if ($entries -match '^(VeilForge-Preset-Selector\.cmd|VeilForge-Apply-Preset\.ps1|VeilForge-Presets/)') {
         throw 'Obsolete external preset selection files remain in the install archive.'
