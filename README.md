@@ -1,18 +1,18 @@
 # VeilForge-CoA
 
-> **[⬇ Download v1.3.1 — Current stable release](https://github.com/uncle-bone/VeilForge-CoA/releases/download/v1.3.1/VeilForge-CoA-v1.3.1.zip)** — [release notes](https://github.com/uncle-bone/VeilForge-CoA/releases/tag/v1.3.1).
+[![Download VeilForge-CoA v1.3.2](https://img.shields.io/badge/Download-VeilForge--CoA%20v1.3.2-brightgreen?style=for-the-badge)](https://github.com/uncle-bone/VeilForge-CoA/releases/latest/download/VeilForge-CoA-v1.3.2.zip)
 
 Atmospheric graphics enhancements for Ascension: Conquest of Azeroth / Conquest Reborn. VeilForge-CoA is based on the GPL-2.0 Lumenveil renderer for the 32-bit World of Warcraft 3.3.5a client.
 
 ## Release status
 
-- **v1.3.0** is the previous stable release.
-- **v1.2.0** is the previous local package. It used a separate Windows preset selector.
-- **v1.3.1** is the current stable release. It includes all v1.3.0 features, fixes setup and uninstall support for folders containing either `Wow.exe` or `Ascension.exe`, and adds `VeilForge-Uninstall.cmd` to the package. Download it from the [GitHub Releases page](https://github.com/uncle-bone/VeilForge-CoA/releases/latest). In-game behavior and hardware-specific performance still need player testing.
+- **v1.3.2** is the current stable release. Level 5 matches Lumenveil's default values across the 60 preset controls; Levels 1–4 are gentler, and Levels 6–10 go beyond the baseline. Water depth is enabled at every level. The packaged default no longer starts with fog reduced by per-zone multipliers. The uninstaller removes VeilForge support files and Lumenveil while preserving DXVK. Download it from the [GitHub Releases page](https://github.com/uncle-bone/VeilForge-CoA/releases/latest). In-game behavior and hardware-specific performance still need player testing.
+- **v1.3.1** added setup and uninstall support for folders containing either `Wow.exe` or `Ascension.exe`.
+- **v1.3.0** added the in-game preset selector. **v1.2.0** was the previous local package and used a separate Windows preset selector.
 
-## v1.3.0 graphics presets
+## v1.3.2 graphics presets
 
-The Ctrl+F7 panel now includes ten individually tuned profiles covering 60 renderer settings. **Level 2 — Subtle** is the packaged default. Settings are staged according to visual impact and cost; the profiles are not made by increasing every option by a fixed percentage. Costly wet-surface and model-relief effects turn on at higher levels. Light shafts, terrain shadows, and radial god rays remain disabled in every profile.
+The Ctrl+F7 panel includes ten staged profiles covering 60 renderer settings. **Level 2 — Subtle** is the packaged default. **Level 5** matches Lumenveil's shipped defaults across those 60 controls; Levels 1–4 reduce effects below that baseline, while Levels 6–10 strengthen them beyond it. Level 10 uses maximum sampling quality. Wet-surface, model-relief, light-shaft, and terrain-shadow effects begin at Level 5; radial god rays remain off. Water depth data is active at every level.
 
 Presets only change their managed graphics settings and preserve zone configuration, hotkeys, diagnostics, and other unrelated settings. All advanced controls remain editable. If you change managed settings so they no longer match a profile, the selector shows **Custom**. Use **Save** in Ctrl+F7 to keep a preset or your manual changes.
 
@@ -22,7 +22,7 @@ Already have VeilForge-CoA installed? **You do not need to uninstall the previou
 
 1. Completely close Conquest Reborn.
 2. Download the latest VeilForge-CoA ZIP from the [GitHub Releases page](https://github.com/uncle-bone/VeilForge-CoA/releases/latest).
-3. Open your Conquest Reborn installation folder, where `Ascension.exe` is located.
+3. Open your Conquest Reborn installation folder, where `Wow.exe` or `Ascension.exe` is located.
 4. Extract the ZIP directly into that folder.
 5. Choose **Replace all existing files** when prompted. Back up your existing `CoAVolFog.ini` first if you want to keep a copy of your custom settings.
 6. Run `VeilForge-Setup.cmd` to refresh the generated lamp and liquid data. This is recommended when upgrading and required for a new installation. It supports game folders containing either `Wow.exe` or `Ascension.exe`.
@@ -42,7 +42,7 @@ Level 2 provides restrained visual improvements while keeping performance in min
 
 ### Uninstall
 
-Close the game and run `VeilForge-Uninstall.cmd` from the game folder. Confirm removal when prompted. The uninstaller removes VeilForge files, settings, and generated lamp/liquid data. It supports folders containing either `Wow.exe` or `Ascension.exe`. It intentionally leaves `d3d9.dll`, `dxgi.dll`, `dxvk.conf`, and the DXVK notice in place because those files may be shared with other graphics tools.
+Close the game and run `VeilForge-Uninstall.cmd` from the game folder. Confirm removal when prompted. The uninstaller removes VeilForge DLLs, settings, generated lamp/liquid data, documentation, and the `Lumenveil` folder. It supports folders containing either `Wow.exe` or `Ascension.exe` and reports if any core VeilForge files remain. It leaves `d3d9.dll`, `dxgi.dll`, `dxvk.conf`, and the DXVK notice in place because those files may be shared with other graphics tools.
 
 **That’s it: Extract → Replace → Run Setup → Select a level in Ctrl+F7 → Save → Play!**
 

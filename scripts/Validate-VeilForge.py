@@ -18,6 +18,7 @@ def read_values(text: str) -> dict[str, str]:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", required=True, type=pathlib.Path)
+    parser.add_argument("--lumenveil-default", required=True, type=pathlib.Path)
     args = parser.parse_args()
     root = args.root
     presets_dir = root / "presets"
@@ -76,15 +77,20 @@ def main() -> None:
         fail("two or more selectable levels have identical managed settings")
 
     for level, values in enumerate(levels, 1):
-        for key in ("LightShafts", "TerrainShadows", "GodRays"):
-            if float(values[key]) != 0.0:
-                fail(f"artifact-prone {key} must remain off in level {level}")
+        for key in ("LightShafts", "TerrainShadows"):
+            expected = 1.0 if level >= 5 else 0.0
+            if float(values[key]) != expected:
+                fail(f"{key} must be enabled from the Lumenveil baseline at level 5 (level {level})")
+        if float(values["GodRays"]) != 0.0:
+            fail(f"GodRays must remain off in level {level}")
 
     if [int(values["Quality"]) for values in levels] != [1, 1, 2, 2, 2, 2, 2, 3, 3, 3]:
         fail("quality tiers do not match the tuned 1/2/3 progression")
     for key in ("WetSurfaces", "Puddles", "WaterMemory", "ReliefModels"):
-        if any(float(values[key]) != 0.0 for values in levels[:7]) or any(float(values[key]) != 1.0 for values in levels[7:]):
-            fail(f"{key} must be reserved for the upper three quality tiers")
+        if any(float(values[key]) != 0.0 for values in levels[:4]) or any(float(values[key]) < 1.0 for values in levels[4:]):
+            fail(f"{key} must be enabled from the Lumenveil baseline at level 5")
+    if any(float(values["LiquidDepth"]) != 1.0 for values in levels):
+        fail("LiquidDepth must be enabled in every level for its water controls to work")
     if [int(values["Banks"]) for values in levels] != [0, 0, 1, 1, 1, 2, 2, 2, 2, 2]:
         fail("bank modes are not stepped by profile tier")
 
@@ -92,9 +98,34 @@ def main() -> None:
         default = read_values(archive.read("CoAVolFog.ini").decode("utf-8-sig"))
     if any(float(default[key]) != float(levels[1][key]) for key in managed):
         fail("Level 2 no longer matches the current package default")
+    if levels[1].get("ZoneDensity", "").strip().lower() != "none":
+        fail("Level 2 package default must not suppress fog through inherited per-zone multipliers")
+    lumenveil_default = read_values(args.lumenveil_default.read_text(encoding="utf-8-sig"))
+    for key in managed:
+        if float(levels[4][key]) != float(lumenveil_default[key]):
+            fail(f"Level 5 must match the Lumenveil default for {key}")
+    anchors = {
+        "Density": 1.0,
+        "DataMode": 1.0,
+        "LightShafts": 1.0,
+        "TerrainShadows": 1.0,
+        "LampFog": 1.0,
+        "LampDayLight": 0.35,
+        "LiquidDepth": 1.0,
+    }
+    for key, expected in anchors.items():
+        if float(levels[4][key]) != expected:
+            fail(f"Level 5 must match the Lumenveil default for {key}")
+    for key in ("Density", "Haze", "GroundFog", "FarFog", "LampFog", "LampDayLight", "WaterReflect", "WaterGlitter", "WaterWaves"):
+        if float(levels[9][key]) <= float(lumenveil_default[key]):
+            fail(f"Level 10 must exceed the Lumenveil default for {key}")
+    for key in ("Density", "Haze", "GroundFog", "FarFog", "CloudShadows", "CloudCover", "LampFog", "LampDayLight", "WaterReflect", "WaterGlitter", "WaterClarity", "WaterWaves"):
+        values = [float(level[key]) for level in levels]
+        if any(after < before for before, after in zip(values, values[1:])):
+            fail(f"{key} must rise consistently through the ten levels")
 
     print("PASS: 10 distinct in-game profiles cover all 60 supported preset settings")
-    print("PASS: staged quality and cost-sensitive effects; artifact-prone shafts remain disabled")
+    print("PASS: Level 5 matches Lumenveil defaults; Levels 6-10 exceed the baseline")
     print("PASS: Level 2 matches the packaged default; profile data matches the compiled table")
 
 
