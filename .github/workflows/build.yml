@@ -26,20 +26,20 @@ jobs:
 
       - name: Build, validate, and package x86 renderer
         shell: pwsh
-        run: .\scripts\Build-VeilForge.ps1 -Version 1.3.1
+        run: .\scripts\Build-VeilForge.ps1 -Version 1.3.2
 
       - name: Upload install-ready build
         uses: actions/upload-artifact@v4
         with:
-          name: VeilForge-CoA-v1.3.1
+          name: VeilForge-CoA-v1.3.2
           path: |
-            dist/VeilForge-CoA-v1.3.1.zip
+            dist/VeilForge-CoA-v1.3.2.zip
             dist/SHA256SUMS.txt
           if-no-files-found: error
 
 
   publish:
-    if: github.ref == 'refs/tags/v1.3.1'
+    if: github.ref == 'refs/tags/v1.3.2'
     needs: build
     runs-on: windows-2022
     permissions:
@@ -48,21 +48,21 @@ jobs:
       - name: Download the verified build artifact
         uses: actions/download-artifact@v4
         with:
-          name: VeilForge-CoA-v1.3.1
+          name: VeilForge-CoA-v1.3.2
           path: dist
 
       - name: Publish release asset
         uses: softprops/action-gh-release@v2
         with:
-          name: VeilForge-CoA v1.3.1 - Installer and Uninstaller Compatibility
+          name: VeilForge-CoA v1.3.2 - Preset Tuning and Complete Uninstall
           body: |
-            VeilForge-CoA v1.3.1 fixes setup and uninstall scripts for game folders using either Wow.exe or Ascension.exe, and adds the missing VeilForge-Uninstall.cmd to the package. It includes all v1.3.0 in-game graphics presets. Level 2 - Subtle is the package default.
+            VeilForge-CoA v1.3.2 sets Level 5 to Lumenveil's shipped defaults across all 60 preset-managed controls. Levels 1-4 reduce effects below that baseline; Levels 6-10 strengthen them beyond it. The package default no longer carries low per-zone density multipliers, and water depth is enabled at every level. The uninstaller removes VeilForge support files and Lumenveil while leaving DXVK files untouched.
 
             Presets modify 60 renderer-supported graphics fields, preserve unrelated configuration, and remain editable through the existing advanced controls. Use Save in Ctrl+F7 to persist preset or manual changes.
 
             The Windows build workflow compiles the 32-bit renderer, runs the CPU-only harness and preset checks, verifies x86 PE headers and both executable-name paths in setup/uninstall, and packages the direct-extract ZIP. In-game behavior and hardware-specific FPS still require testing on Conquest Reborn.
           files: |
-            dist/VeilForge-CoA-v1.3.1.zip
+            dist/VeilForge-CoA-v1.3.2.zip
             dist/SHA256SUMS.txt
           fail_on_unmatched_files: true
           generate_release_notes: true

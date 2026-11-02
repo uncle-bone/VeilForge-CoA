@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.2
+- Set Level 5 to Lumenveil's shipped defaults across all 60 preset-managed controls.
+- Tune Levels 1–4 below that baseline and Levels 6–10 above it, with a stronger maximum profile.
+- Normalize the packaged default zone-density list and enable liquid-depth data at all levels.
+- Expand uninstall cleanup to remove VeilForge documentation/config files and verify core files are gone, while preserving DXVK.
+
 ## 1.3.1
 - Fix setup script detection and running-game checks for both Wow.exe and Ascension.exe.
 - Add VeilForge-Uninstall.cmd with support for both executable names.

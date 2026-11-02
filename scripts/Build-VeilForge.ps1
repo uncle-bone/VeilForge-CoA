@@ -1,5 +1,5 @@
 #Requires -Version 5.1
-param([string]$Version = '1.3.1')
+param([string]$Version = '1.3.2')
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 $upstream = Join-Path $root 'upstream\Lumenveil'
@@ -17,7 +17,7 @@ if (-not (Test-Path $presetZip)) { throw "Missing source package: $presetZip" }
 if (-not (Test-Path $buildScript)) { throw "Missing upstream build source: $buildScript" }
 $actualRef = (& git -C $upstream rev-parse HEAD).Trim()
 if ($actualRef -ne $expectedRef) { throw "Unexpected Lumenveil source revision: $actualRef" }
-python (Join-Path $PSScriptRoot 'Validate-VeilForge.py') --root $root
+python (Join-Path $PSScriptRoot 'Validate-VeilForge.py') --root $root --lumenveil-default (Join-Path $upstream 'engine\CoAVolFog.ini')
 if ($LASTEXITCODE) { throw 'Preset source validation failed.' }
 
 $source = Join-Path $upstream 'engine\src'
@@ -65,15 +65,18 @@ if (Test-Path $oldPresets) { Remove-Item $oldPresets -Recurse -Force }
 $readme = @"
 VeilForge-CoA v$Version - IN-GAME GRAPHICS PRESETS
 
-The Ctrl+F7 settings panel now includes ten graphics profiles. Level 2 - Subtle
-is the default in this package. Presets change only 60 VeilForge graphics
-settings; zone lists, key bindings, diagnostics, and other unrelated settings
-are left alone. All original advanced controls remain available below the
-preset selector. A manual change that does not match a profile displays Custom.
+The Ctrl+F7 settings panel includes ten staged graphics profiles. Level 2 -
+Subtle is the default in this package. Level 5 matches Lumenveil's shipped
+defaults across the 60 preset controls. Levels 6-10 strengthen the effects
+past that baseline; Level 10 uses maximum sampling quality. Presets change only 60
+VeilForge graphics settings; zone lists, key bindings, diagnostics, and other
+unrelated settings are left alone. All original advanced controls remain
+available below the preset selector. A manual change displays Custom when it
+does not match a profile.
 
 INSTALL
 1. Close Conquest Reborn and back up your current graphics files and INI.
-2. Extract this ZIP directly into the folder containing Ascension.exe.
+2. Extract this ZIP directly into the folder containing Wow.exe or Ascension.exe.
 3. Run VeilForge-Setup.cmd once for a first-time installation. It creates
    lampdata.bin and liquiddata.bin from your local game files. Existing users
    may keep their existing data files. Run setup again after game data changes.
@@ -81,11 +84,12 @@ INSTALL
    section; edit individual controls below it as desired.
 5. Use Save in the panel to retain your selection and manual changes.
 
-Level 1 is Minimal; Level 2 is Subtle (Default); Levels 3-10 add effects in
-stages. Wet surfaces, puddles, water memory, and model relief are restricted to
-the upper three tiers. Light shafts, terrain shadows, and radial god rays stay
-off in every profile. Higher levels may reduce FPS; actual performance depends
-on hardware and has not been benchmarked on your system.
+Level 1 is Minimal; Level 2 is Subtle (Default); Level 5 matches Lumenveil's
+default controls; Levels 6-10 go beyond that baseline. Water depth is enabled
+at every level. Wet surfaces, puddles, water memory, model relief, light shafts,
+and terrain shadows begin at level 5; radial god rays stay off.
+Higher levels may reduce FPS; actual performance depends on hardware and has
+not been benchmarked on your system.
 
 This renderer targets the 32-bit WoW 3.3.5a client. Always back up existing
 files before installing or upgrading. For source and license details, see
@@ -93,20 +97,26 @@ VeilForge-SOURCE.txt and the bundled Lumenveil notices.
 
 UNINSTALL
 1. Close the game and run VeilForge-Uninstall.cmd from this folder.
-2. Confirm removal. It removes VeilForge files and generated data, but leaves
-   d3d9.dll, dxgi.dll, dxvk.conf, and the DXVK notice untouched because these
-   may be shared with other graphics tools.
+2. Confirm removal. It removes VeilForge files, documentation, and generated
+   data, including the Lumenveil folder. It leaves d3d9.dll, dxgi.dll,
+   dxvk.conf, and the DXVK notice untouched because these may be shared with
+   other graphics tools.
 "@
 [IO.File]::WriteAllText((Join-Path $stage 'README-FIRST.txt'), $readme, [Text.UTF8Encoding]::new($false))
 
 $changelog = @"
 VeilForge-CoA v$Version
+- Match the Lumenveil default controls at Level 5 and strengthen effects through Level 10.
+- Retune Levels 1-4 below baseline and Levels 6-10 above it.
+- Normalize the packaged default zone-density list; enable water depth for all levels.
+- Expand uninstall cleanup to remove VeilForge support files and verify removal.
+- Preserve DXVK files and their notice during uninstall.
 - Rebuilt the 32-bit CoAVolFog renderer with an integrated Ctrl+F7 preset selector.
 - Added ten individually staged profiles; Level 2 remains the subtle package default.
 - Limited preset application to the 60 profile-managed graphics settings.
 - Preserved zone settings, hotkeys, diagnostics, and the renderer's advanced controls.
 - Added live Custom detection and used the renderer's existing Save/Revert flow.
-- Kept light shafts, terrain shadows, and radial god rays disabled across profiles.
+- Enabled light shafts and terrain shadows from the Level 5 baseline; kept radial god rays off.
 - Automated CPU-only renderer checks and 32-bit PE validation; in-game behavior still needs client testing.
 "@
 [IO.File]::WriteAllText((Join-Path $stage 'CHANGELOG-VeilForge.txt'), $changelog, [Text.UTF8Encoding]::new($false))
@@ -151,6 +161,13 @@ try {
         foreach ($exeName in @('Wow.exe', 'Ascension.exe')) {
             if (-not $scriptText.Contains($exeName)) { throw "$scriptName does not support $exeName" }
         }
+    }
+    $uninstallText = [IO.File]::ReadAllText((Join-Path $stage 'VeilForge-Uninstall.cmd'))
+    foreach ($ownedFile in @('version.dll', 'CoAVolFog.dll', 'CoAVolFog.ini', 'CoAVolFog-regions.ini', 'lampdata.bin', 'liquiddata.bin', 'CoAVolFog-spots', 'Lumenveil', 'VeilForge-Presets', 'README-FIRST', 'CHANGELOG-VeilForge', 'BUILD', 'VeilForge-Original-v1.1.0.ini', 'VeilForge-SOURCE', 'Dear-ImGui-LICENSE')) {
+        if (-not $uninstallText.Contains($ownedFile)) { throw "Uninstaller does not remove VeilForge file or folder $ownedFile" }
+    }
+    foreach ($sharedFile in @('d3d9.dll', 'dxgi.dll', 'dxvk.conf', 'DXVK')) {
+        if (-not $uninstallText.Contains($sharedFile)) { throw "Uninstaller does not document preserving shared DXVK file $sharedFile" }
     }
     if ($entries -match '^(VeilForge-Preset-Selector\.cmd|VeilForge-Apply-Preset\.ps1|VeilForge-Presets/)') {
         throw 'Obsolete external preset selection files remain in the install archive.'
