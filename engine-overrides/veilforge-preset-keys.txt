@@ -95,7 +95,6 @@ ShaftFocus
 ShaftGlare
 ShaftHaze
 ShaftLength
-ShaftMemory
 ShaftRange
 Shafts
 SkyBrightness
@@ -121,7 +120,6 @@ Tint
 Twilight
 WaterClarity
 WaterGlitter
-WaterMemory
 WaterRain
 WaterReflect
 WaterWaves

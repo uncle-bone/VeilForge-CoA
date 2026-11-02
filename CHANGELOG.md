@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.5
+- Keep both "Remember what was seen" options unchecked by default and independent of preset selection.
+- Strengthen shaft effects at Levels 6-10 while reducing sun scatter and glare to avoid an over-bright sun.
+- Retain the Level 5 Lumenveil baseline across all 133 preset-managed graphics controls.
+
 ## 1.3.4
 - Enable light shafts and terrain shadows at all ten preset levels.
 - Strengthen sun scatter, sun/moon shafts, and low-sun lighting progressively through the upper tiers.

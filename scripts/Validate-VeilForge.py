@@ -36,7 +36,7 @@ def main() -> None:
     managed = (root / "engine-overrides" / "veilforge-preset-keys.txt").read_text(encoding="utf-8").splitlines()
     if len(managed) != len(set(managed)):
         fail("preset key list contains duplicates")
-    if set(managed) & {"DebugView", "DrawLog", "PerfLog", "LogLevel", "SunMarker", "Underwater"}:
+    if set(managed) & {"DebugView", "DrawLog", "PerfLog", "LogLevel", "SunMarker", "Underwater", "ShaftMemory", "WaterMemory"}:
         fail("preset key list must preserve diagnostics and live context toggles")
 
     bindings: list[dict[str, str]] = []
@@ -56,7 +56,7 @@ def main() -> None:
 
     config_source = root / "engine-overrides" / "config-live-setting-keys.txt"
     supported = set(config_source.read_text(encoding="utf-8").splitlines())
-    excluded = {"DebugView", "DrawLog", "PerfLog", "LogLevel", "SunMarker", "Underwater"}
+    excluded = {"DebugView", "DrawLog", "PerfLog", "LogLevel", "SunMarker", "Underwater", "ShaftMemory", "WaterMemory"}
     if set(managed) != supported - excluded:
         fail("preset key list must include every visual setting and preserve diagnostics/context controls")
     if set(managed) - supported:
@@ -64,6 +64,8 @@ def main() -> None:
     with (root / "engine-overrides" / "config-live-setting-ranges.csv").open(newline="", encoding="utf-8") as file:
         ranges = {row["key"]: (float(row["min"]), float(row["max"])) for row in csv.DictReader(file)}
     for level, values in enumerate(levels, 1):
+        if float(values["ShaftMemory"]) != 0.0 or float(values["WaterMemory"]) != 0.0:
+            fail(f"both Remember what was seen options must start unchecked in level {level}")
         for key in managed:
             value = float(values[key])
             low, high = ranges[key]
@@ -88,7 +90,7 @@ def main() -> None:
 
     if [int(values["Quality"]) for values in levels] != [1, 1, 2, 2, 2, 2, 2, 3, 3, 3]:
         fail("quality tiers do not match the tuned 1/2/3 progression")
-    for key in ("WetSurfaces", "Puddles", "WaterMemory", "ReliefModels"):
+    for key in ("WetSurfaces", "Puddles", "ReliefModels"):
         if any(float(values[key]) != 0.0 for values in levels[:4]) or any(float(values[key]) < 1.0 for values in levels[4:]):
             fail(f"{key} must be enabled from the Lumenveil baseline at level 5")
     if any(float(values["LiquidDepth"]) != 1.0 for values in levels):
@@ -102,6 +104,8 @@ def main() -> None:
         fail("Level 2 no longer matches the current package default")
     if levels[1].get("ZoneDensity", "").strip().lower() != "none":
         fail("Level 2 package default must not suppress fog through inherited per-zone multipliers")
+    if float(levels[1]["ShaftMemory"]) != 0.0 or float(levels[1]["WaterMemory"]) != 0.0:
+        fail("the packaged Level 2 default must start with both Remember what was seen options unchecked")
     lumenveil_default = read_values(args.lumenveil_default.read_text(encoding="utf-8-sig"))
     for key in managed:
         if float(levels[4][key]) != float(lumenveil_default[key]):
@@ -124,6 +128,8 @@ def main() -> None:
     for key in ("LowSunLight", "LowSunShafts", "Shafts", "ShaftHaze", "MoonShafts", "SunScatter"):
         if float(levels[9][key]) <= float(lumenveil_default[key]):
             fail(f"Level 10 must strengthen the Lumenveil default for {key}")
+    if float(levels[9]["SunScatter"]) > 1.25 or float(levels[9]["ShaftGlare"]) > 0.30:
+        fail("Level 10 must keep the sun and its halo restrained while strengthening the shafts")
     for key, maximum in (("Shafts", 4.0), ("LowSunShafts", 3.0), ("MoonShafts", 8.0), ("WeatherShafts", 1.0)):
         if float(levels[9][key]) != maximum:
             fail(f"Level 10 must use the full supported {key} strength")
@@ -135,6 +141,8 @@ def main() -> None:
             fail(f"{key} must rise consistently through the ten levels")
 
     print(f"PASS: 10 distinct in-game profiles cover all {len(managed)} supported graphics settings")
+    print("PASS: both Remember what was seen options default off and stay independent of presets")
+    print("PASS: high tiers strengthen occlusion shafts without excessively boosting sun scatter or glare")
     print("PASS: Level 5 matches Lumenveil defaults; Levels 6-10 exceed the baseline")
     print("PASS: Level 2 matches the packaged default; profile data matches the compiled table")
 
