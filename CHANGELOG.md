@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.3
+- Apply all 135 renderer graphics settings from each in-game preset, including light shafts, terrain shadows, low-sun lighting, lanterns, moon shafts, and material relief.
+- Set Level 5 to the pinned Lumenveil defaults for every preset-managed graphics option; tune Levels 1–4 below and Levels 6–10 above those baselines.
+- Keep diagnostics and live context toggles under player control.
+
+
 ## 1.3.2
 - Set Level 5 to Lumenveil's shipped defaults across all 60 preset-managed controls.
 - Tune Levels 1–4 below that baseline and Levels 6–10 above it, with a stronger maximum profile.

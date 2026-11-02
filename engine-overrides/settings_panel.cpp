@@ -716,7 +716,7 @@ bool DrawVeilForgePreset(Config& c)
         ImGui::EndCombo();
     }
     if (active == 0)
-        ImGui::TextDisabled("Custom settings. Presets change only their 60 managed graphics controls.");
+        ImGui::TextDisabled("Custom settings. Presets apply all graphics controls while preserving diagnostics, context toggles, and zone data.");
     else
         ImGui::TextDisabled("%s. Use Save below to keep preset and manual changes across restarts.",
                             veilforge::PresetName(active));
