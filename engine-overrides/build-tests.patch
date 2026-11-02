@@ -38,6 +38,7 @@ index 142f6a6..8967da1 100644
 +void CheckVeilForgePresets()
 +{
 +    Config original;
++    original.density = 0.0f;
 +    original.enable = false;
 +    original.debugView = 4;
 +    original.logLevel = 2;
