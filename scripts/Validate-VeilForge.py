@@ -33,12 +33,11 @@ def main() -> None:
             fail(f"missing {path.name}")
         levels.append(read_values(path.read_text(encoding="utf-8-sig")))
 
-    match = re.search(r"\$managed=@\((.*?)\)", zipfile.ZipFile(root / "assets" / "VeilForge-CoA-v1.2.0-Local-Presets.zip").read("VeilForge-Apply-Preset.ps1").decode("utf-8-sig"), re.S)
-    if not match:
-        fail("could not read the original preset-managed field list")
-    managed = re.findall(r"'([^']+)'", match.group(1))
-    if len(managed) != 60:
-        fail(f"expected 60 managed settings, found {len(managed)}")
+    managed = (root / "engine-overrides" / "veilforge-preset-keys.txt").read_text(encoding="utf-8").splitlines()
+    if len(managed) != len(set(managed)):
+        fail("preset key list contains duplicates")
+    if set(managed) & {"DebugView", "DrawLog", "PerfLog", "LogLevel", "SunMarker", "Underwater"}:
+        fail("preset key list must preserve diagnostics and live context toggles")
 
     bindings: list[dict[str, str]] = []
     for level in range(1, 11):
@@ -47,8 +46,8 @@ def main() -> None:
             fail(f"missing compiled data for level {level}")
         entries = dict(re.findall(r'\{"([A-Za-z][A-Za-z0-9_]*)",\s*(-?\d+(?:\.\d+)?)(?:f)?\}', block.group(1)))
         if set(entries) != set(managed):
-            fail(f"level {level} does not contain exactly the 60 managed settings")
-        if len(entries) != 60:
+            fail(f"level {level} does not contain exactly {len(managed)} managed settings")
+        if len(entries) != len(managed):
             fail(f"level {level} has duplicate or missing settings")
         for key in managed:
             if float(entries[key]) != float(levels[level - 1][key]):
@@ -57,6 +56,9 @@ def main() -> None:
 
     config_source = root / "engine-overrides" / "config-live-setting-keys.txt"
     supported = set(config_source.read_text(encoding="utf-8").splitlines())
+    excluded = {"DebugView", "DrawLog", "PerfLog", "LogLevel", "SunMarker", "Underwater"}
+    if set(managed) != supported - excluded:
+        fail("preset key list must include every visual setting and preserve diagnostics/context controls")
     if set(managed) - supported:
         fail(f"unsupported renderer fields: {sorted(set(managed) - supported)}")
     with (root / "engine-overrides" / "config-live-setting-ranges.csv").open(newline="", encoding="utf-8") as file:
@@ -119,12 +121,15 @@ def main() -> None:
     for key in ("Density", "Haze", "GroundFog", "FarFog", "LampFog", "LampDayLight", "WaterReflect", "WaterGlitter", "WaterWaves"):
         if float(levels[9][key]) <= float(lumenveil_default[key]):
             fail(f"Level 10 must exceed the Lumenveil default for {key}")
+    for key in ("LowSunLight", "LowSunShafts", "Shafts", "ShaftHaze", "MoonShafts"):
+        if float(levels[9][key]) <= float(lumenveil_default[key]):
+            fail(f"Level 10 must strengthen the Lumenveil default for {key}")
     for key in ("Density", "Haze", "GroundFog", "FarFog", "CloudShadows", "CloudCover", "LampFog", "LampDayLight", "WaterReflect", "WaterGlitter", "WaterClarity", "WaterWaves"):
         values = [float(level[key]) for level in levels]
         if any(after < before for before, after in zip(values, values[1:])):
             fail(f"{key} must rise consistently through the ten levels")
 
-    print("PASS: 10 distinct in-game profiles cover all 60 supported preset settings")
+    print(f"PASS: 10 distinct in-game profiles cover all {len(managed)} supported graphics settings")
     print("PASS: Level 5 matches Lumenveil defaults; Levels 6-10 exceed the baseline")
     print("PASS: Level 2 matches the packaged default; profile data matches the compiled table")
 

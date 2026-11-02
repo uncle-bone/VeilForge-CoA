@@ -1,5 +1,5 @@
-#Requires -Version 5.1
-param([string]$Version = '1.3.2')
+﻿#Requires -Version 5.1
+param([string]$Version = '1.3.3')
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 $upstream = Join-Path $root 'upstream\Lumenveil'
@@ -67,8 +67,8 @@ VeilForge-CoA v$Version - IN-GAME GRAPHICS PRESETS
 
 The Ctrl+F7 settings panel includes ten staged graphics profiles. Level 2 -
 Subtle is the default in this package. Level 5 matches Lumenveil's shipped
-defaults across the 60 preset controls. Levels 6-10 strengthen the effects
-past that baseline; Level 10 uses maximum sampling quality. Presets change only 60
+defaults across all 135 graphics controls. Levels 6-10 strengthen the effects
+past that baseline; Level 10 uses maximum sampling quality. Presets apply all 135
 VeilForge graphics settings; zone lists, key bindings, diagnostics, and other
 unrelated settings are left alone. All original advanced controls remain
 available below the preset selector. A manual change displays Custom when it
@@ -87,7 +87,9 @@ INSTALL
 Level 1 is Minimal; Level 2 is Subtle (Default); Level 5 matches Lumenveil's
 default controls; Levels 6-10 go beyond that baseline. Water depth is enabled
 at every level. Wet surfaces, puddles, water memory, model relief, light shafts,
-and terrain shadows begin at level 5; radial god rays stay off.
+and terrain shadows begin at Level 5; low-sun lighting scales through all ten
+profiles, while radial god rays stay off. All 135 graphics controls are applied
+by every profile; diagnostics and live context toggles remain player-controlled.
 Higher levels may reduce FPS; actual performance depends on hardware and has
 not been benchmarked on your system.
 
@@ -113,7 +115,7 @@ VeilForge-CoA v$Version
 - Preserve DXVK files and their notice during uninstall.
 - Rebuilt the 32-bit CoAVolFog renderer with an integrated Ctrl+F7 preset selector.
 - Added ten individually staged profiles; Level 2 remains the subtle package default.
-- Limited preset application to the 60 profile-managed graphics settings.
+- Applied all 135 graphics settings from every in-game profile.
 - Preserved zone settings, hotkeys, diagnostics, and the renderer's advanced controls.
 - Added live Custom detection and used the renderer's existing Save/Revert flow.
 - Enabled light shafts and terrain shadows from the Level 5 baseline; kept radial god rays off.
