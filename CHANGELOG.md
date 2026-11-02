@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.4
+- Enable light shafts and terrain shadows at all ten preset levels.
+- Strengthen sun scatter, sun/moon shafts, and low-sun lighting progressively through the upper tiers.
+- Stop storm weather from suppressing shafts and restrain upper-tier weather fog to preserve scene contrast.
+
+
 ## 1.3.3
 - Apply all 135 renderer graphics settings from each in-game preset, including light shafts, terrain shadows, low-sun lighting, lanterns, moon shafts, and material relief.
 - Set Level 5 to the pinned Lumenveil defaults for every preset-managed graphics option; tune Levels 1–4 below and Levels 6–10 above those baselines.

@@ -1,18 +1,18 @@
 # VeilForge-CoA
 
-[![Download VeilForge-CoA v1.3.3](https://img.shields.io/badge/Download-VeilForge--CoA%20v1.3.3-brightgreen?style=for-the-badge)](https://github.com/uncle-bone/VeilForge-CoA/releases/latest/download/VeilForge-CoA-v1.3.3.zip)
+[![Download VeilForge-CoA v1.3.4](https://img.shields.io/badge/Download-VeilForge--CoA%20v1.3.4-brightgreen?style=for-the-badge)](https://github.com/uncle-bone/VeilForge-CoA/releases/latest/download/VeilForge-CoA-v1.3.4.zip)
 
 Atmospheric graphics enhancements for Ascension: Conquest of Azeroth / Conquest Reborn. VeilForge-CoA is based on the GPL-2.0 Lumenveil renderer for the 32-bit World of Warcraft 3.3.5a client.
 
 ## Release status
 
-- **v1.3.3** is the current stable release. Level 5 matches Lumenveil's default values across all 135 renderer graphics controls; Levels 1–4 are gentler, and Levels 6–10 go beyond the baseline. Water depth is enabled at every level. The packaged default no longer starts with fog reduced by per-zone multipliers. The uninstaller removes VeilForge support files and Lumenveil while preserving DXVK. Download it from the [GitHub Releases page](https://github.com/uncle-bone/VeilForge-CoA/releases/latest). In-game behavior and hardware-specific performance still need player testing.
+- **v1.3.4** is the current stable release. Level 5 matches Lumenveil's defaults across all 135 renderer graphics controls. Light shafts and terrain shadows are enabled at every level; Levels 1–4 are gentle, while Levels 6–10 strongly increase sun scatter, shafts, and moonlight. Water depth is enabled at every level. The packaged default no longer starts with fog reduced by per-zone multipliers. The uninstaller removes VeilForge support files and Lumenveil while preserving DXVK. Download it from the [GitHub Releases page](https://github.com/uncle-bone/VeilForge-CoA/releases/latest). In-game behavior and hardware-specific performance still need player testing.
 - **v1.3.1** added setup and uninstall support for folders containing either `Wow.exe` or `Ascension.exe`.
 - **v1.3.0** added the in-game preset selector. **v1.2.0** was the previous local package and used a separate Windows preset selector.
 
-## v1.3.3 graphics presets
+## v1.3.4 graphics presets
 
-The Ctrl+F7 panel includes ten staged profiles covering all 135 renderer graphics settings. **Level 2 — Subtle** is the packaged default. **Level 5** matches Lumenveil's shipped defaults across all 135 controls; Levels 1–4 reduce effects below that baseline, while Levels 6–10 strengthen them beyond it. Every profile applies the full graphics set, including light shafts, terrain shadows, low-sun lighting, moon shafts, and material relief. Level 10 uses maximum sampling quality; radial god rays remain off. Water depth data is active at every level. Diagnostics and live context toggles remain under player control.
+The Ctrl+F7 panel includes ten staged profiles covering all 135 renderer graphics settings. **Level 2 — Subtle** is the packaged default. **Level 5** matches Lumenveil's shipped defaults across all 135 controls; Levels 1–4 keep effects gentle, while Levels 6–10 greatly strengthen them. Every profile applies the full graphics set, including light shafts, terrain shadows, low-sun lighting, and moon shafts. Higher weather-shaft values prevent storms from suppressing beams, and restrained weather fog keeps scenes readable. Level 10 uses maximum sampling quality; radial god rays remain off. Water depth data is active at every level. Diagnostics and live context toggles remain under player control.
 
 Presets only change their managed graphics settings and preserve zone configuration, hotkeys, diagnostics, and other unrelated settings. All advanced controls remain editable. If you change managed settings so they no longer match a profile, the selector shows **Custom**. Use **Save** in Ctrl+F7 to keep a preset or your manual changes.
 
