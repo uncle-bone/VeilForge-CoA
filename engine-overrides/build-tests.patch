@@ -31,7 +31,7 @@ index 142f6a6..8967da1 100644
  #include "corpse_lights.h"
  #include "draw_log.h"
  #include "drift_noise.h"
-@@ -209,6 +210,38 @@ void Check(bool ok, const char* what)
+@@ -209,6 +210,39 @@ void Check(bool ok, const char* what)
          ++g_failures;
  }
  
