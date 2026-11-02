@@ -4,9 +4,9 @@ Atmospheric graphics enhancements for Ascension: Conquest of Azeroth / Conquest 
 
 ## Release status
 
-- **v1.1.0** is the latest published GitHub release.
+- **v1.3.0** is the previous stable release.
 - **v1.2.0** is the previous local package. It used a separate Windows preset selector.
-- **v1.3.0** adds ten in-game graphics profiles to the Ctrl+F7 panel. Its Windows x86 build and automated checks have passed, and the install-ready ZIP is available from the successful [GitHub Actions build](https://github.com/uncle-bone/VeilForge-CoA/actions). In-game behavior and hardware-specific performance still need player testing.
+- **v1.3.1** is the current stable release. It includes all v1.3.0 features, fixes setup and uninstall support for folders containing either `Wow.exe` or `Ascension.exe`, and adds `VeilForge-Uninstall.cmd` to the package. Download it from the [GitHub Releases page](https://github.com/uncle-bone/VeilForge-CoA/releases/latest). In-game behavior and hardware-specific performance still need player testing.
 
 ## v1.3.0 graphics presets
 
@@ -19,11 +19,11 @@ Presets only change their managed graphics settings and preserve zone configurat
 Already have VeilForge-CoA installed? **You do not need to uninstall the previous version.**
 
 1. Completely close Conquest Reborn.
-2. Download the latest VeilForge-CoA ZIP from the [GitHub Actions build](https://github.com/uncle-bone/VeilForge-CoA/actions) or the Releases page when v1.3.0 is published.
+2. Download the latest VeilForge-CoA ZIP from the [GitHub Releases page](https://github.com/uncle-bone/VeilForge-CoA/releases/latest).
 3. Open your Conquest Reborn installation folder, where `Ascension.exe` is located.
 4. Extract the ZIP directly into that folder.
 5. Choose **Replace all existing files** when prompted. Back up your existing `CoAVolFog.ini` first if you want to keep a copy of your custom settings.
-6. Run `VeilForge-Setup.cmd` to refresh the generated lamp and liquid data. This is recommended when upgrading and required for a new installation.
+6. Run `VeilForge-Setup.cmd` to refresh the generated lamp and liquid data. This is recommended when upgrading and required for a new installation. It supports game folders containing either `Wow.exe` or `Ascension.exe`.
 7. Launch Conquest Reborn and press **Ctrl+F7** to choose one of the ten graphics levels.
 8. Press **Save** in the panel to persist your selection.
 
@@ -37,6 +37,10 @@ Level 2 provides restrained visual improvements while keeping performance in min
 - The old `VeilForge-Preset-Selector.cmd` is not used in v1.3.0; select levels in-game with Ctrl+F7.
 - Existing custom settings can be kept by preserving your old `CoAVolFog.ini`. If its settings do not match a preset, the panel will show **Custom**.
 - New installations should run `VeilForge-Setup.cmd` once before launching the game.
+
+### Uninstall
+
+Close the game and run `VeilForge-Uninstall.cmd` from the game folder. Confirm removal when prompted. The uninstaller removes VeilForge files, settings, and generated lamp/liquid data. It supports folders containing either `Wow.exe` or `Ascension.exe`. It intentionally leaves `d3d9.dll`, `dxgi.dll`, `dxvk.conf`, and the DXVK notice in place because those files may be shared with other graphics tools.
 
 **That’s it: Extract → Replace → Run Setup → Select a level in Ctrl+F7 → Save → Play!**
 
