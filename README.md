@@ -1,5 +1,7 @@
 # VeilForge-CoA
 
+> **[⬇ Download v1.3.1 — Current stable release](https://github.com/uncle-bone/VeilForge-CoA/releases/download/v1.3.1/VeilForge-CoA-v1.3.1.zip)** — [release notes](https://github.com/uncle-bone/VeilForge-CoA/releases/tag/v1.3.1).
+
 Atmospheric graphics enhancements for Ascension: Conquest of Azeroth / Conquest Reborn. VeilForge-CoA is based on the GPL-2.0 Lumenveil renderer for the 32-bit World of Warcraft 3.3.5a client.
 
 ## Release status
