@@ -1,6 +1,6 @@
 # VeilForge-CoA
 
-[![Download VeilForge-CoA v1.3.5](https://img.shields.io/badge/Download-VeilForge--CoA%20v1.3.5-brightgreen?style=for-the-badge)](https://github.com/uncle-bone/VeilForge-CoA/releases/latest/download/VeilForge-CoA-v1.3.5.zip)
+> **[Download](https://github.com/uncle-bone/VeilForge-CoA/releases/latest)**
 
 Atmospheric graphics enhancements for Ascension: Conquest of Azeroth / Conquest Reborn. VeilForge-CoA is based on the GPL-2.0 Lumenveil renderer for the 32-bit World of Warcraft 3.3.5a client.
 
