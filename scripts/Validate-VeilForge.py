@@ -80,9 +80,9 @@ def main() -> None:
 
     for level, values in enumerate(levels, 1):
         for key in ("LightShafts", "TerrainShadows"):
-            expected = 1.0 if level >= 5 else 0.0
+            expected = 1.0
             if float(values[key]) != expected:
-                fail(f"{key} must be enabled from the Lumenveil baseline at level 5 (level {level})")
+                fail(f"{key} must be enabled at every preset level (level {level})")
         if float(values["GodRays"]) != 0.0:
             fail(f"GodRays must remain off in level {level}")
 
@@ -121,10 +121,15 @@ def main() -> None:
     for key in ("Density", "Haze", "GroundFog", "FarFog", "LampFog", "LampDayLight", "WaterReflect", "WaterGlitter", "WaterWaves"):
         if float(levels[9][key]) <= float(lumenveil_default[key]):
             fail(f"Level 10 must exceed the Lumenveil default for {key}")
-    for key in ("LowSunLight", "LowSunShafts", "Shafts", "ShaftHaze", "MoonShafts"):
+    for key in ("LowSunLight", "LowSunShafts", "Shafts", "ShaftHaze", "MoonShafts", "SunScatter"):
         if float(levels[9][key]) <= float(lumenveil_default[key]):
             fail(f"Level 10 must strengthen the Lumenveil default for {key}")
-    for key in ("Density", "Haze", "GroundFog", "FarFog", "CloudShadows", "CloudCover", "LampFog", "LampDayLight", "WaterReflect", "WaterGlitter", "WaterClarity", "WaterWaves"):
+    for key, maximum in (("Shafts", 4.0), ("LowSunShafts", 3.0), ("MoonShafts", 8.0), ("WeatherShafts", 1.0)):
+        if float(levels[9][key]) != maximum:
+            fail(f"Level 10 must use the full supported {key} strength")
+    if float(levels[9]["WeatherFog"]) > 1.3:
+        fail("Level 10 weather fog must preserve enough scene contrast for lighting")
+    for key in ("Density", "Haze", "GroundFog", "FarFog", "CloudShadows", "CloudCover", "LampFog", "LampDayLight", "WaterReflect", "WaterGlitter", "WaterClarity", "WaterWaves", "SunScatter", "Shafts", "WeatherShafts"):
         values = [float(level[key]) for level in levels]
         if any(after < before for before, after in zip(values, values[1:])):
             fail(f"{key} must rise consistently through the ten levels")

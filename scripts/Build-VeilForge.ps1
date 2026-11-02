@@ -1,5 +1,5 @@
 ﻿#Requires -Version 5.1
-param([string]$Version = '1.3.3')
+param([string]$Version = '1.3.4')
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 $upstream = Join-Path $root 'upstream\Lumenveil'
@@ -67,8 +67,8 @@ VeilForge-CoA v$Version - IN-GAME GRAPHICS PRESETS
 
 The Ctrl+F7 settings panel includes ten staged graphics profiles. Level 2 -
 Subtle is the default in this package. Level 5 matches Lumenveil's shipped
-defaults across all 135 graphics controls. Levels 6-10 strengthen the effects
-past that baseline; Level 10 uses maximum sampling quality. Presets apply all 135
+defaults across all 135 graphics controls. Light shafts and terrain shadows
+are enabled in every level; the upper tiers greatly strengthen sun and moon lighting. Presets apply all 135
 VeilForge graphics settings; zone lists, key bindings, diagnostics, and other
 unrelated settings are left alone. All original advanced controls remain
 available below the preset selector. A manual change displays Custom when it
@@ -86,9 +86,9 @@ INSTALL
 
 Level 1 is Minimal; Level 2 is Subtle (Default); Level 5 matches Lumenveil's
 default controls; Levels 6-10 go beyond that baseline. Water depth is enabled
-at every level. Wet surfaces, puddles, water memory, model relief, light shafts,
-and terrain shadows begin at Level 5; low-sun lighting scales through all ten
-profiles, while radial god rays stay off. All 135 graphics controls are applied
+at every level. Wet surfaces, puddles, water memory, and model relief begin at
+Level 5. Light shafts and terrain shadows are active in every profile; low-sun
+lighting scales through all ten, and radial god rays stay off. All 135 graphics controls are applied
 by every profile; diagnostics and live context toggles remain player-controlled.
 Higher levels may reduce FPS; actual performance depends on hardware and has
 not been benchmarked on your system.
@@ -108,8 +108,8 @@ UNINSTALL
 
 $changelog = @"
 VeilForge-CoA v$Version
-- Match the Lumenveil default controls at Level 5 and strengthen effects through Level 10.
-- Retune Levels 1-4 below baseline and Levels 6-10 above it.
+- Match all 135 Lumenveil graphics defaults at Level 5; strengthen shafts at every level.
+- Keep Levels 1-4 gentle and make Levels 6-10 substantially brighter, including in storms.
 - Normalize the packaged default zone-density list; enable water depth for all levels.
 - Expand uninstall cleanup to remove VeilForge support files and verify removal.
 - Preserve DXVK files and their notice during uninstall.
@@ -118,7 +118,7 @@ VeilForge-CoA v$Version
 - Applied all 135 graphics settings from every in-game profile.
 - Preserved zone settings, hotkeys, diagnostics, and the renderer's advanced controls.
 - Added live Custom detection and used the renderer's existing Save/Revert flow.
-- Enabled light shafts and terrain shadows from the Level 5 baseline; kept radial god rays off.
+- Enabled light shafts and terrain shadows at every level; kept radial god rays off.
 - Automated CPU-only renderer checks and 32-bit PE validation; in-game behavior still needs client testing.
 "@
 [IO.File]::WriteAllText((Join-Path $stage 'CHANGELOG-VeilForge.txt'), $changelog, [Text.UTF8Encoding]::new($false))
